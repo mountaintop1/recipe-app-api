@@ -1,0 +1,10 @@
+[flake8]
+exclude =
+    manage.py,
+    migrations,
+    settings.py,
+    .git,
+    __pycache__,
+    docs/source/conf.py,
+    old,
+    build,dist,venv,.venv,.env,.tox,.eggs,*.egg,*.egg-info,*.egg-info/*
