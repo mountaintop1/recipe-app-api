@@ -20,7 +20,9 @@ schema.yml
 .DS_store
 *.DS_Store/
 *.pdf
-docker-commands.txt
+
+commands_sample*
+
 # C extensions
 *.so
 .DS_Store
