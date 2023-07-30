@@ -14,6 +14,13 @@ services:
       - ./app:/usr/src/app
     command: >
       sh -c "python manage.py runserver 0.0.0.0:8000"
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+      - DB_NAME=postgres
+      - DB_USER=postgres
+      - DB_PASS=postgres
   db:
     container_name: db
     image: postgres
@@ -24,6 +31,8 @@ services:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+    volumes:
+      - dev-db-data:/var/lib/postgresql/data
   db_mgmt:
     image: dpage/pgadmin4
     container_name: db_mgmt
@@ -39,3 +48,4 @@ services:
 
 volumes:
   pg_admin:
+  dev-db-data:
