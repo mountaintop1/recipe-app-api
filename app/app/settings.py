@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
-
+# import os
 from pathlib import Path
 import environ
 
@@ -24,7 +24,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 
-SECRET_KEY = env(‘SECRET_KEY’)
+# SECRET_KEY = env('SECRET_KEY')
+SECRET_KEY= 'django-insecure-qvh%7-!sgm44#%+73p(htn1ml)*zf#@qn+krei-44_lpk5)w%*'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -40,6 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # Local apps
+    'core',
 ]
 
 MIDDLEWARE = [
@@ -78,11 +81,13 @@ WSGI_APPLICATION = 'app.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+	    'NAME': env('DB_NAME'),
+	    'USER': env('DB_USER'),
+	    'PASSWORD': env('DB_PASS'),
+        'HOST': env('DB_HOST'),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
