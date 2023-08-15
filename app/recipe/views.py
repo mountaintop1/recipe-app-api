@@ -18,15 +18,17 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         """Return objects for the current authenticated user only"""
-        return self.queryset.filter(user=self.request.user).order_by('-id') # This is how we filter objects by user
+        #  This is how we filter objects by user
+        return self.queryset.filter(user=self.request.user).order_by('-id')
 
     def get_serializer_class(self):
         """Return appropriate serializer class"""
-        if self.action == 'list': # This is how we check the action of the request
+        #  This is how we check the action of the request
+        if self.action == 'list':
             return serializers.RecipeSerializer
 
         return self.serializer_class
-    
+
     def perform_create(self, serializer):
         """Create a new recipe"""
         serializer.save(user=self.request.user)

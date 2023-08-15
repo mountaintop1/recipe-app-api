@@ -2,8 +2,6 @@
 Test the recipe APIs
 """
 from decimal import Decimal
-from hmac import new
-from operator import ne
 
 from django.contrib.auth import get_user_model
 from django.test import TestCase
@@ -24,6 +22,7 @@ def detail_url(recipe_id):
     """Return recipe detail URL"""
     return reverse('recipe:recipe-detail', args=[recipe_id])
 
+
 def create_recipe(user, **params):
     """Create and return a sample recipe"""
     defaults = {
@@ -37,6 +36,7 @@ def create_recipe(user, **params):
     defaults.update(params)
     recipe = Recipe.objects.create(user=user, **defaults)
     return recipe
+
 
 def create_user(**params):
     """Create and return a sample user"""
@@ -113,13 +113,17 @@ class PrivateRecipeApiTests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
         for key, value in payload.items():
             #  recipe.key is the same as getattr(recipe, key)
-            self.assertEqual(getattr(recipe, key), value) # This is how we check the value of a field in a model
+            # This is how we check the value of a field in a model
+            self.assertEqual(getattr(recipe, key), value)
         self.assertEqual(recipe.user, self.user)
 
     def test_partial_update_recipe(self):
         """Test updating a recipe with patch"""
         original_link = 'http://www.example.com/recipe.pdf'
-        recipe = create_recipe(user=self.user, link=original_link, title='Sample recipe title')
+        recipe = create_recipe(
+            user=self.user,
+            link=original_link,
+            title='Sample recipe title')
 
         payload = {'title': 'New Receip Title'}
         url = detail_url(recipe.id)
@@ -160,7 +164,9 @@ class PrivateRecipeApiTests(TestCase):
 
     def test_update_user_returns_error(self):
         """Test that updating the user field returns an error"""
-        new_user = create_user(email='newuser@example.com', password='testpass')
+        new_user = create_user(
+            email='newuser@example.com', password='testpass'
+            )
         recipe = create_recipe(user=self.user)
 
         payload = {'user': new_user.id}
