@@ -50,9 +50,21 @@ class Recipe(models.Model):
     time_minutes = models.IntegerField()
     price = models.DecimalField(max_digits=5, decimal_places=2)
     link = models.CharField(max_length=255, blank=True)
-    #  ingredients = models.ManyToManyField('Ingredient')
-    #  tags = models.ManyToManyField('Tag')
+    tags = models.ManyToManyField('Tag')
 
     def __str__(self):
         """Return string representation of the recipe"""
         return str(self.title)
+
+
+class Tag(models.Model):
+    """Tag object: Tag for filtering recipes"""
+    name = models.CharField(max_length=255)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+        )
+
+    def __str__(self):
+        """Return string representation of the tag"""
+        return str(self.name)
