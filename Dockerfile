@@ -11,9 +11,9 @@ COPY ./requirements.dev.txt ./
 
 ARG DEV=false
 RUN pip install --upgrade pip && \
-    apk add --update --no-cache postgresql-client && \
+    apk add --update --no-cache postgresql-client jpeg-dev && \
     apk add --update --no-cache --virtual .tmp-build-deps \
-        build-base postgresql-dev musl-dev && \
+        build-base postgresql-dev musl-dev zlib zlib-dev && \
     pip install --no-cache-dir -r requirements.txt && \
     if [ "$DEV" = "true" ]; \
         then pip install --no-cache-dir -r requirements.dev.txt; \
@@ -22,10 +22,14 @@ RUN pip install --upgrade pip && \
     rm  requirements.dev.txt && \
     apk del .tmp-build-deps && \
     adduser -D \
-    --disabled-password \
-    --no-create-home \
-    django-user && \ 
-    chown -R django-user:django-user /usr/src/app
+        --disabled-password \
+        --no-create-home \
+        django-user && \
+    chown -R django-user:django-user /usr/src/app && \
+    mkdir -p /vol/web/media && \
+    mkdir -p /vol/web/static && \
+    chown -R django-user:django-user /vol && \
+    chmod -R 755 /vol
 
 COPY ./app .
 EXPOSE 8000

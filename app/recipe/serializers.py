@@ -86,4 +86,14 @@ class RecipeDetailSerializer(RecipeSerializer):
     """Serializer for recipe detail objects"""
     class Meta(RecipeSerializer.Meta):
         """Serializer meta class"""
-        fields = RecipeSerializer.Meta.fields + ('description',)
+        fields = RecipeSerializer.Meta.fields + ('description', 'image',)
+
+
+class RecipeImageSerializer(serializers.ModelSerializer):
+    """Serializer for uploading images to recipes"""
+    class Meta:
+        """Serializer meta class"""
+        model = Recipe
+        fields = ('id', 'image',)
+        read_only_fields = ('id',)
+        extra_kwargs = {'image': {'required': True}}
